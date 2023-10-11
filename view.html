@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>책 상세보기</title>
+    <style>
+        button {
+            border-radius: 5px;
+        }
+
+        p:hover {
+            background-color: white;
+            color:blue;
+            font-size: 18pt;
+            padding:10px;
+        }
+        button {
+           margin:5%;
+           width:10%;
+           padding: 10px 20px;
+        }
+       
+        body {
+            padding-top: 10%;
+            text-align: center;
+            background-color: ivory;
+        }
+
+        #set_box {
+            padding :15% 10%;
+            margin: 0 30% 0 30%;
+            border:5px solid brown;
+        }
+        </style>
+    <script>
+        function loadBookDetails() {
+            var params = new URLSearchParams(window.location.search);
+            var index = params.get("index");
+            var books = JSON.parse(localStorage.getItem("books") || "[]");
+            var book = books[index];
+
+            if (book) {
+                document.getElementById("title").textContent = book.title;
+                document.getElementById("author").textContent = book.author;
+                document.getElementById("difficulty").textContent = book.difficulty;
+                document.getElementById("date").textContent = book.date;
+            }
+        }
+
+        function deleteBook() {
+            var confirmation = confirm("게시물을 삭제할까요?");
+            if (confirmation) {
+                var params = new URLSearchParams(window.location.search);
+                var index = params.get("index");
+                var books = JSON.parse(localStorage.getItem("books") || "[]");
+                books.splice(index, 1);
+                localStorage.setItem("books", JSON.stringify(books));
+                location.href = 'index.html';
+            }
+        }
+
+        window.onload = loadBookDetails;
+    </script>
+</head>
+<body>
+    <h1>책 상세보기</h1>
+    <div id =set_box>
+    <p>제목: <span id="title"></span></p>
+    <p>저자: <span id="author"></span></p>
+    <p>난이도: <span id="difficulty"></span></p>
+    <p>완독일자: <span id="date"></span></p>
+    </div>
+    <button onclick="location.href='edit.html?index=' + new URLSearchParams(window.location.search).get('index')">Edit</button>
+    <button onclick="deleteBook()">Delete</button>
+</body>
+</html>

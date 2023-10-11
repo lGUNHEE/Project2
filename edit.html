@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <style>
+        h1 {
+            border-bottom:  3px solid brown;
+            padding :20px;
+        }
+        
+        #title,#author {
+            border: 1px solid white;
+            border-bottom: 3px solid burlywood;
+            background-color:white;
+            border-radius: 5px;
+            width:66%;
+            padding: 10px 20px;
+            
+
+        }
+
+         body {
+            text-align: center;
+            padding:10%;
+            background-color: ivory;
+
+         }
+
+         #date {
+            border:1px solid wheat;
+            width :30%;
+            padding :10px 20px;
+            text-align: center;
+        }
+        select {
+            border: 1px solid rgb(229, 234, 225);
+            padding : 7px 30px;
+            font-size: 12pt;
+            border-radius: 4px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>책 수정</title>
+    <script>
+        function loadBookDetails() {
+            var params = new URLSearchParams(window.location.search);
+            var index = params.get("index");
+            var books = JSON.parse(localStorage.getItem("books") || "[]");
+            var book = books[index];
+
+            if (book) {
+                document.getElementById("title").value = book.title;
+                document.getElementById("author").value = book.author;
+                document.getElementById("difficulty").value = book.difficulty;
+                document.getElementById("date").value = book.date;
+            }
+        }
+
+        function updateBook() {
+            var confirmation = confirm("게시물을 수정할까요?");
+            if (confirmation) {
+                var params = new URLSearchParams(window.location.search);
+                var index = params.get("index");
+                var books = JSON.parse(localStorage.getItem("books") || "[]");
+
+                books[index] = {
+                    title: document.getElementById("title").value,
+                    author: document.getElementById("author").value,
+                    difficulty: document.getElementById("difficulty").value,
+                    date: document.getElementById("date").value
+                };
+
+                localStorage.setItem("books", JSON.stringify(books));
+                location.href = 'view.html?index=' + index;
+            }
+            return false;
+        }
+
+        window.onload = loadBookDetails;
+    </script>
+</head>
+<body>
+    <h1>책 수정</h1>
+    <form onsubmit="return updateBook()">
+        <label for="title">제목:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="author">저자:</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+
+        <label for="difficulty">난이도:</label><br>
+        <select id="difficulty" name="difficulty">
+            <option value="초급">초급</option>
+            <option value="중급">중급</option>
+            <option value="고급">고급</option>
+        </select><br><br>
+
+        <label for="date">완독일자:</label><br>
+        <input type="date" id="date" name="date"><br><br>
+
+        <input type="submit" value="수정">
+    </form>
+</body>
+</html>

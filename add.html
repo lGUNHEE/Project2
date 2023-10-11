@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+    
+    <style>
+        input[type=submit] {
+            width:30%;
+            border-radius: 10px;
+            border: 1px solid white;
+            padding :20px;
+            margin-top:100px;
+            margin-bottom: 100px;
+            background-color: burlywood;
+            font-size: 15pt;;
+        }
+
+        input[type=submit]:hover{
+            background-color: grey;
+        }
+        
+        #insert_text {
+            border :1px solid brown;
+            margin:80px;
+            padding : 30px;
+           
+        }
+
+        
+        #date {
+            border:1px solid wheat;
+            width :30%;
+            padding :10px 20px;
+            text-align: center;
+        }
+        select {
+            border: 1px solid rgb(229, 234, 225);
+            padding : 10px 30px;
+            font-size: 15pt;
+            border-radius: 4px;
+        }
+
+       #title,#author {
+            border: 1px solid white;
+            border-bottom: 3px solid burlywood;
+            background-color:white;
+            border-radius: 5px;
+            width:66%;
+            padding: 10px 20px;
+            
+
+        }
+       
+    
+
+       h1 {
+        border-bottom: 2px solid black;
+        
+        text-align: center;
+        padding : 30px;
+       }
+
+       form {
+        text-align: center;
+       }
+
+
+        </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>책 추가</title>
+    <script>
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        function validateForm() {
+    var title = document.forms["bookForm"]["title"].value;
+    var author = document.forms["bookForm"]["author"].value;
+    var difficulty = document.forms["bookForm"]["difficulty"].value;
+    var date = document.forms["bookForm"]["date"].value;
+
+    if (title == "" || author == "") {
+        alert("제목과 저자는 필수 입력 항목입니다.");
+        return false;
+    } else {
+        var books = JSON.parse(localStorage.getItem("books") || "[]");
+        books.push({ title: title, author: author, difficulty: difficulty, date: date });
+        localStorage.setItem("books", JSON.stringify(books));
+        
+        alert("게시물이 추가됩니다.");
+        location.href = 'index.html';
+        return false; // Prevent form submission as we're handling it with JS
+    }
+}
+    </script>
+</head>
+<body style="background-color: ivory;">
+
+
+    <h1>새로운 책 추가하기</h1>
+
+    
+    <form name="bookForm" onsubmit="return validateForm()">
+        <div id = insert_text>
+        <label for="title">제목:</label><br>
+        <input type="text" id="title" name="title" placeholder="책의 제목을 입력하시오."><br><br>
+
+        <label for="author">저자:</label><br>
+        <input type="text" id="author" name="author" placeholder="저자의 이름을 입력하시오"><br><br>
+    
+    </div>
+
+        <label for="difficulty">난이도:</label><br>
+        <select id="difficulty" name="difficulty">
+            <option value="초급">초급</option>
+            <option value="중급">중급</option>
+            <option value="고급">고급</option>
+        </select><br><br>
+
+        <label for="date">완독일자:</label><br>
+        <input type="date" id="date" name="date"><br><br>
+
+        <input type="submit" value="추가">
+    </form>
+</body>
+</html>
